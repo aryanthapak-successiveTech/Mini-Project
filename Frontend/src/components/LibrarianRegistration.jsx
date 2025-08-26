@@ -53,8 +53,6 @@ export default function LibrarianRegistration() {
       branch:branchRef.current.value
     };
 
-    console.log(data);
-
     if (data.password.length < 8) {
       setMatchPassword(false);
       setShortLength(true);
