@@ -1,7 +1,7 @@
-const User = require("../Models/UserModel");
-const catchAsync = require("../utils/catchAsync");
-const jwt = require("jsonwebtoken");
-const { ApiError } = require("../Middlwares/AppError");
+import User from "../Models/UserModel.js";
+import catchAsync from "../utils/catchAsync.js";
+import jwt from "jsonwebtoken";
+import { ApiError } from "../Middlwares/AppError.js";
 
 const signRefreshToken = (payload) => {
   return jwt.sign(payload, process.env.JWT_REFRESH_SECRET, {
@@ -15,7 +15,7 @@ const signAccessToken = (payload) => {
   });
 };
 
-exports.loginHandler = catchAsync(async (req, res, next) => {
+export const loginHandler = catchAsync(async (req, res, next) => {
   const { email, password } = req.body;
   const user = await User.findOne({ email: req.body.email }).select(
     "+password"
@@ -26,8 +26,16 @@ exports.loginHandler = catchAsync(async (req, res, next) => {
     throw new ApiError(401, "Unauthorized");
   }
 
-  const refreshToken = signRefreshToken({ userId:user._id,email, role: user.role });
-  const accessToken = signAccessToken({ userId:user._id,email, role: user.role });
+  const refreshToken = signRefreshToken({
+    userId: user._id,
+    email,
+    role: user.role,
+  });
+  const accessToken = signAccessToken({
+    userId: user._id,
+    email,
+    role: user.role,
+  });
 
   res.cookie("jwt", refreshToken, {
     expiresIn: new Date(
@@ -40,7 +48,7 @@ exports.loginHandler = catchAsync(async (req, res, next) => {
   next();
 });
 
-exports.refreshHandler = catchAsync(async (req, res, next) => {
+export const refreshHandler = catchAsync(async (req, res, next) => {
   const refreshToken = req.cookies.jwt;
 
   if (!refreshToken) {
@@ -56,11 +64,11 @@ exports.refreshHandler = catchAsync(async (req, res, next) => {
       email: payload.email,
       role: payload.role,
     });
-    res.status(200).json({ accessToken,role: payload.role });
+    res.status(200).json({ accessToken, role: payload.role });
   });
 });
 
-exports.logoutHandler = catchAsync(async (req, res, next) => {
+export const logoutHandler = catchAsync(async (req, res, next) => {
   res.clearCookie("jwt", {
     httpOnly: true,
     secure: true,

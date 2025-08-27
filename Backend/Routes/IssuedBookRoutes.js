@@ -1,11 +1,11 @@
-const express = require("express");
-const issuedBookController = require("../Controller/IssuedBookController");
-const { authChecker, roleBasedAccess } = require("../Middlwares/AuthMiddleware");
+import express from "express";
+import { checkIssuedBooks,reIssueBook,returnBook,statistics } from "../Controller/IssuedBookController.js";
+import { authChecker, roleBasedAccess } from "../Middlwares/AuthMiddleware.js";
 
 const router = express.Router();
 
-router.route("/").post(authChecker,roleBasedAccess(["Admin"]),issuedBookController.checkIssuedBooks);
-router.route("/return").post(authChecker,roleBasedAccess(["Admin"]),issuedBookController.returnBook);
-router.route("/statistics").get(authChecker,roleBasedAccess(["Admin"]),issuedBookController.statistics);
-router.route("/re-issue-book").post(authChecker,roleBasedAccess(["Admin"]),issuedBookController.reIssueBook);
-module.exports = router;
+router.route("/").post(authChecker,roleBasedAccess(["Admin"]),checkIssuedBooks);
+router.route("/return").post(authChecker,roleBasedAccess(["Admin"]),returnBook);
+router.route("/statistics").get(authChecker,roleBasedAccess(["Admin"]),statistics);
+router.route("/re-issue-book").post(authChecker,roleBasedAccess(["Admin"]),reIssueBook);
+export default router;

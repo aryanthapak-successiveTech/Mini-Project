@@ -1,0 +1,13 @@
+type Message {
+    _id: ID!
+    conversationId: ID!
+    sender: String!
+    message: String!
+    createdAt: String!
+}
+
+type Conversation{
+    _id: ID!
+    userId: ID!
+    createdAt: String!
+}

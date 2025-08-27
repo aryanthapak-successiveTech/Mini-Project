@@ -1,13 +1,14 @@
-const express = require("express");
-const router = express.Router();
-const userController = require("../Controller/UserController");
-const authController = require("../Controller/AuthController");
-const { authChecker, roleBasedAccess, verifyAdminRegistration } = require("../Middlwares/AuthMiddleware");
-router.route("/").get(authChecker,roleBasedAccess(["Admin"]),userController.getUsers);
-router.route("/refresh").get(authController.refreshHandler);
-router.route("/signup").post(verifyAdminRegistration,userController.createUser);
-router.route("/login").post(authController.loginHandler);
-router.route("/profile").get(authChecker,userController.profileDetails);
-router.route("/logout").post(authController.logoutHandler);
+import express from "express";
+import {getUsers,createUser,profileDetails} from "../Controller/UserController.js";
+import { authChecker, roleBasedAccess, verifyAdminRegistration } from "../Middlwares/AuthMiddleware.js";
+import {loginHandler,refreshHandler,logoutHandler} from "../Controller/AuthController.js";
 
-module.exports = router;
+const router = express.Router();
+router.route("/").get(authChecker,roleBasedAccess(["Admin"]),getUsers);
+router.route("/refresh").get(refreshHandler);
+router.route("/signup").post(verifyAdminRegistration,createUser);
+router.route("/login").post(loginHandler);
+router.route("/profile").get(authChecker,profileDetails);
+router.route("/logout").post(logoutHandler);
+
+export default router;

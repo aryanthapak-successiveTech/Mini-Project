@@ -1,0 +1,12 @@
+type Query{
+    getMessages:[Message!]!
+}
+
+type Mutation{
+    sendMessage(text:String!):Message!
+    createConversation:Conversation!
+}
+
+type Subscription{
+    messageSent:Message!
+}

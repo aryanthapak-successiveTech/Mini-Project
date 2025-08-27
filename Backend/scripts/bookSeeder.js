@@ -1,5 +1,5 @@
 const dotenv=require("dotenv")
-const Book = require("./Models/BookModel");
+const Book = require("../Models/BookModel");
 const { default: mongoose } = require("mongoose");
 const { faker } = require("@faker-js/faker");
 

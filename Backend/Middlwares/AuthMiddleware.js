@@ -19,6 +19,7 @@ export const authChecker = (req, res, next) => {
       role: decoded.role,
     };
 
+
     next();
   } catch (err) {
     next(err);

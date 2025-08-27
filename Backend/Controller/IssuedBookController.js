@@ -1,12 +1,11 @@
-const User = require("../Models/UserModel");
-const mongoose = require("mongoose");
-const Book = require("../Models/BookModel");
-const Request = require("../Models/IssueModel");
-const catchAsync = require("../utils/catchAsync");
+import User from "../Models/UserModel.js";
+import mongoose from "mongoose";
+import Book from "../Models/BookModel.js";
+import Request from "../Models/IssueModel.js";
+import catchAsync from "../utils/catchAsync.js";
+import { ApiError } from "../Middlwares/AppError.js";
 
-const { ApiError } = require("../Middlwares/AppError");
-
-exports.checkIssuedBooks = catchAsync(async (req, res, next) => {
+export const checkIssuedBooks = catchAsync(async (req, res, next) => {
   const enrollmentNo = req.body.enrollmentNo?.toUpperCase();
 
   const student = await User.findOne({
@@ -25,7 +24,7 @@ exports.checkIssuedBooks = catchAsync(async (req, res, next) => {
   next();
 });
 
-exports.returnBook = catchAsync(async (req, res, next) => {
+export const returnBook = catchAsync(async (req, res, next) => {
   try {
     const id = req.query.id;
 
@@ -33,7 +32,6 @@ exports.returnBook = catchAsync(async (req, res, next) => {
 
     request.status = "Returned";
     request.returnTime = new Date();
-
 
     const timeDiff = request.returnTime - request.issueTime;
     const daysDiff = Math.floor(timeDiff / (24 * 60 * 60 * 1000));
@@ -45,7 +43,7 @@ exports.returnBook = catchAsync(async (req, res, next) => {
     const updatedBook = await Book.findOneAndUpdate(
       { _id: request.book },
       { $inc: { qty: +1 } },
-      { new: true}
+      { new: true }
     );
 
     res.status(200).json({
@@ -57,7 +55,7 @@ exports.returnBook = catchAsync(async (req, res, next) => {
   }
 });
 
-exports.statistics = catchAsync(async (req, res, next) => {
+export const statistics = catchAsync(async (req, res, next) => {
   const { year } = req.query;
 
   if (!year || isNaN(year)) {
@@ -128,7 +126,7 @@ exports.statistics = catchAsync(async (req, res, next) => {
   });
 });
 
-exports.reIssueBook = catchAsync(async (req, res, next) => {
+export const reIssueBook = catchAsync(async (req, res, next) => {
   const id = req.query.id;
   console.log(id);
 

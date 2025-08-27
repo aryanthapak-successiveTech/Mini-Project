@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+import mongoose from "mongoose";
 
 const requestSchema = new mongoose.Schema({
   book: {
@@ -56,4 +56,4 @@ requestSchema.pre("save", function (next) {
 });
 
 const requestModel = mongoose.model("Request", requestSchema);
-module.exports = requestModel;
+export default requestModel;

@@ -1,7 +1,7 @@
-const catchAysnc = require("../utils/catchAsync");
-const User = require("../Models/UserModel");
-const jwt = require("jsonwebtoken");
-exports.getUsers = catchAysnc(async (req, res, next) => {
+import catchAsync from "../utils/catchAsync.js";
+import User from "../Models/UserModel.js";
+
+export const getUsers = catchAsync(async (req, res, next) => {
   const users = await User.find();
   res.status(200).json({
     status: "Success",
@@ -13,8 +13,7 @@ exports.getUsers = catchAysnc(async (req, res, next) => {
   next();
 });
 
-exports.createUser = catchAysnc(async (req, res, next) => {
-
+export const createUser = catchAsync(async (req, res, next) => {
   const user = await User.create(req.body);
   res.status(200).json({
     stats: "Success",
@@ -26,11 +25,11 @@ exports.createUser = catchAysnc(async (req, res, next) => {
   next();
 });
 
-exports.updateUser = catchAysnc(async (req, res, next) => {
+export const updateUser = catchAsync(async (req, res, next) => {
   next();
 });
 
-exports.profileDetails = catchAysnc(async (req, res, next) => {
+export const profileDetails = catchAsync(async (req, res, next) => {
   const email = req.user.email;
   const user = await User.findOne({ email });
 
@@ -46,7 +45,7 @@ exports.profileDetails = catchAysnc(async (req, res, next) => {
   next();
 });
 
-exports.deleteUser = catchAysnc(async (req, res, next) => {
+export const deleteUser = catchAsync(async (req, res, next) => {
   const deletedUser = await User.findOneAndDelete(req.body);
   res.status(202).json({
     status: "Success",

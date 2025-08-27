@@ -1,9 +1,9 @@
-const express = require("express");
+import express from "express";
+import { getBooks,getBook } from "../Controller/BookController.js";
+import { authChecker } from "../Middlwares/AuthMiddleware.js";
+
 const router = express.Router();
-const bookController = require("../Controller/BookController");
-const { authChecker } = require("../Middlwares/AuthMiddleware");
+router.route("/").get(authChecker,getBooks);
+router.route("/:id").get(authChecker,getBook);
 
-router.route("/").get(authChecker,bookController.getBooks);
-router.route("/:id").get(authChecker,bookController.getBook);
-
-module.exports = router;
+export default router;

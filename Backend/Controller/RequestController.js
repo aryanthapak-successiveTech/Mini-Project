@@ -1,12 +1,13 @@
-const User = require("../Models/UserModel");
-const Book = require("../Models/BookModel");
-const Request = require("../Models/IssueModel");
-const catchAsync = require("../utils/catchAsync");
-const sendEmail = require("../utils/email");
-const template = require("./../utils/emailTemplate");
-const { ApiError } = require("../Middlwares/AppError");
+import mongoose from "mongoose";
+import User from "../Models/UserModel.js";
+import Book from "../Models/BookModel.js";
+import Request from "../Models/IssueModel.js";
+import catchAsync from "../utils/catchAsync.js";
+import sendEmail from "../utils/email.js";
+import template from "../utils/emailTemplate.js";
+import { ApiError } from "../Middlwares/AppError.js";
 
-exports.checkRequests = catchAsync(async (req, res, next) => {
+export const checkRequests = catchAsync(async (req, res, next) => {
   const role = req.user.role;
   const email = req.user.email;
   let requests = {};
@@ -26,7 +27,6 @@ exports.checkRequests = catchAsync(async (req, res, next) => {
       { path: "book", model: "Book" },
       { path: "user", model: "User" },
     ]);
-
   } else {
     res.status(403).json({
       error: "Wrong User role",
@@ -37,16 +37,13 @@ exports.checkRequests = catchAsync(async (req, res, next) => {
   next();
 });
 
-exports.requestBook = catchAsync(async (req, res, next) => {
-  const session = await mongoose.startSession();
-  session.startTransaction();
+export const requestBook = catchAsync(async (req, res, next) => {
 
-  try {
     const { bookId } = req.body;
     const email = req.user.email;
     const userId = req.user.userId;
 
-    const book = await Book.findById(bookId).session(session);
+    const book = await Book.findById(bookId);
     if (!book) {
       throw new ApiError(404, "Book not found");
     }
@@ -59,20 +56,24 @@ exports.requestBook = catchAsync(async (req, res, next) => {
       user: userId,
       book: bookId,
       status: { $in: ["Pending", "Approved", "Collected"] },
-    }).session(session);
+    });
 
     if (existingRequest) {
-      throw new ApiError(400, "You already have an active request for this book");
+      throw new ApiError(
+        400,
+        "You already have an active request for this book"
+      );
     }
 
     const newRequest = await Request.create(
-      [{
-        email,
-        book: bookId,
-        status: "Pending",
-        user: userId,
-      }],
-      { session }
+      [
+        {
+          email,
+          book: bookId,
+          status: "Pending",
+          user: userId,
+        },
+      ],
     );
 
     await User.findOneAndUpdate(
@@ -85,12 +86,8 @@ exports.requestBook = catchAsync(async (req, res, next) => {
       {
         new: true,
         runValidators: true,
-        session,
       }
     );
-
-    await session.commitTransaction();
-    session.endSession();
 
     res.status(200).json({
       status: "Success",
@@ -100,13 +97,9 @@ exports.requestBook = catchAsync(async (req, res, next) => {
     });
 
     next();
-  } catch (error) {
-    await session.abortTransaction();
-    session.endSession();
-    next(error);
-  }
 });
-exports.approveRequest = catchAsync(async (req, res, next) => {
+
+export const approveRequest = catchAsync(async (req, res, next) => {
   const requestId = req.body.id;
   const status = req.body.status;
 

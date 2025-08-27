@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+import mongoose from "mongoose";
 
 const bookSchema = new mongoose.Schema({
   name: {
@@ -27,5 +27,4 @@ bookSchema.methods.Approve=async function (){
 
 const bookModel = mongoose.model("Book", bookSchema);
 
-
-module.exports = bookModel;
+export default bookModel;

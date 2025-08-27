@@ -1,6 +1,6 @@
-const bcrypt = require("bcryptjs");
-const mongoose = require("mongoose");
-const validator = require("validator");
+import mongoose from "mongoose";
+import validator from "validator";
+import bcrypt from "bcryptjs";
 const userSchema = new mongoose.Schema({
   name: {
     type: String,
@@ -60,4 +60,4 @@ userSchema.methods.correctPassword = async function (
 
 const userModel = mongoose.model("User", userSchema);
 
-module.exports = userModel;
+export default userModel;
