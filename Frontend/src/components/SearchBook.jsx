@@ -6,12 +6,11 @@ import { AuthContext } from "@/context/AuthContext";
 
 const SearchPage = () => {
   const searchRef = useRef();
-  const [allBooks, setAllBooks] = useState();
   const [books, setBooks] = useState([]);
   const { accessToken } = useContext(AuthContext);
-  const timeRef=useRef(null);
+  const timeRef = useRef(null);
 
-  const fetchData = async (searchTerm="") => {
+  const fetchData = async (searchTerm = "") => {
     const response = await fetch(`${REQUEST_URL}/books?search=${searchTerm}`, {
       method: "GET",
       headers: {
@@ -20,16 +19,15 @@ const SearchPage = () => {
       },
     });
     const data = await response.json();
-
     setBooks(data.data);
   };
+
   const searchHandler = (event) => {
-    event.preventDefault();
-    const searchTerm = searchRef.current.value;    
-    if(timeRef.current) clearTimeout(timeRef.current);
-    timeRef.current=setTimeout(() => {
-        fetchData(searchTerm);
-    },1500)
+    const searchTerm = searchRef.current.value;
+    if (timeRef.current) clearTimeout(timeRef.current);
+    timeRef.current = setTimeout(() => {
+      fetchData(searchTerm);
+    }, 500);
   };
 
   useEffect(() => {
@@ -38,26 +36,42 @@ const SearchPage = () => {
   }, [accessToken]);
 
   return (
-    <>
-      <div className="flex justify-center">
-        <form className="max-w-md w-full bg-white shadow-md rounded-lg px-8 pt-6 pb-4">
+    <div className="px-4 py-8">
+
+      <div className="flex justify-center mb-10">
+        <form
+          className="w-full max-w-xl bg-white/70 backdrop-blur-md shadow-md rounded-xl px-6 py-4 border border-gray-200"
+          onSubmit={(e) => e.preventDefault()}
+        >
           <div className="flex items-center border-b-2 border-teal-500 py-2">
             <input
               type="text"
-              className="appearance-none bg-transparent border-none w-full text-gray-700 mr-3 py-1 px-2 leading-tight focus:outline-none"
-              placeholder="Search..."
               ref={searchRef}
               onChange={searchHandler}
+              placeholder="Search books, authors..."
+              className="appearance-none bg-transparent border-none w-full text-gray-800 placeholder:text-gray-400 mr-3 py-2 px-2 leading-tight focus:outline-none focus:ring-0 focus:placeholder:text-teal-600 transition-all duration-200"
             />
           </div>
         </form>
       </div>
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-4">
-        {books.map((el) => (
-          <Book key={el._id} id={el._id} name={el.name} author={el.author} />
-        ))}
+      
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+        {books.length > 0 ? (
+          books.map((book) => (
+            <Book
+              key={book._id}
+              id={book._id}
+              name={book.name}
+              author={book.author}
+            />
+          ))
+        ) : (
+          <div className="col-span-full text-center text-gray-500">
+            No books found.
+          </div>
+        )}
       </div>
-    </>
+    </div>
   );
 };
 

@@ -83,7 +83,6 @@ await apolloServer.start();
 app.use(
   "/graphql",
   express.json(),
-  authChecker,
   expressMiddleware(apolloServer,{
     context: async ({req}) =>({ user:req.user,pubsub })
   })

@@ -19,7 +19,7 @@ export const checkIssuedBooks = catchAsync(async (req, res, next) => {
 
   res.status(200).json({
     status: "Success",
-    data: issuedBooks,
+    data: issuedBooks.filter((request) => request.status === "Collected" || request.status === "Returned"),
   });
   next();
 });
@@ -71,6 +71,7 @@ export const statistics = catchAsync(async (req, res, next) => {
           $gte: new Date(yearInt, 0),
           $lt: new Date(yearInt + 1, 0),
         },
+        status:{$in:["Collected","Returned","Approved"]}
       },
     },
     {
@@ -113,6 +114,7 @@ export const statistics = catchAsync(async (req, res, next) => {
   ]);
 
   const totalBooksIssued = await Request.countDocuments({
+    status:{$in:["Collected","Returned","Approved"]},
     issueTime: {
       $gte: new Date(yearInt, 0),
       $lt: new Date(yearInt + 1, 0),

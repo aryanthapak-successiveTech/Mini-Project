@@ -1,9 +1,9 @@
-import image from "../Items/QuickLib logo1.png";
-import sideImage from "../Items/6310507.jpg";
-import Input from "../utils/Input";
+"use client";
+
+import Input from "./Input";
 import { useRef, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import BASE_URL from "../utils/Constant";
+import { useRouter } from "next/navigation";
+import { REQUEST_URL } from "@/utils/constant";
 
 export default function StudentRegistration() {
   const formTags = [
@@ -17,9 +17,10 @@ export default function StudentRegistration() {
     "Branch",
   ];
 
-  const navigate = useNavigate();
+  const router = useRouter();
   const [matchPassword, setMatchPassword] = useState(false);
   const [shortLength, setShortLength] = useState(false);
+
   const nameRef = useRef();
   const emailRef = useRef();
   const collegeRef = useRef();
@@ -49,6 +50,7 @@ export default function StudentRegistration() {
       college: collegeRef.current.value,
       enrollmentNumber: enrollmentRef.current.value,
       branch: branchRef.current.value,
+      session: sessionRef.current.value,
       role: "Student",
     };
 
@@ -57,13 +59,14 @@ export default function StudentRegistration() {
       setShortLength(true);
       return;
     }
+
     if (confirmPasswordRef.current.value !== data.password) {
-      setMatchPassword(false);
       setMatchPassword(true);
+      setShortLength(false);
       return;
     }
 
-    const response = await fetch(`${BASE_URL}/api/v1/user/Signup`, {
+    const response = await fetch(`${REQUEST_URL}/user/Signup`, {
       method: "POST",
       body: JSON.stringify(data),
       headers: {
@@ -73,65 +76,78 @@ export default function StudentRegistration() {
 
     if (response.ok) {
       setTimeout(() => {
-        navigate("/Login");
+        router.push("/Login");
       }, 3000);
     }
   };
 
   return (
-    <>
-      <div className="flex">
-        <div className="w-[50%] hidden md:block">
-          <img src={sideImage} alt="illustration" />
-        </div>
-        <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8 ">
-          <div className="sm:mx-auto sm:w-full sm:max-w-sm">
-            <img
-              className="mx-auto h-10 w-auto"
-              src={image}
-              alt="Your Company"
-            />
-            <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
-              Sign Up your account
-            </h2>
-          </div>
+    <div className="min-h-screen flex flex-col md:flex-row bg-gradient-to-br from-white via-blue-50 to-white">
 
-          <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-            <form className="space-y-6" onSubmit={onSubmitHandler}>
-              {formTags.map((el) => (
-                <Input
-                  htmlFor={el}
-                  labelClasses="block text-sm font-medium leading-6 text-gray-900"
-                  inputClasses="block w-full rounded-md border-0 px-4 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                  type={
-                    el === "Email"
-                      ? "email"
-                      : el.includes("Password")
-                      ? "password"
-                      : "text"
-                  }
-                  ref={refs[el.split(" ").join("").toLowerCase()]}
-                  key={el}
-                />
-              ))}
-              {matchPassword && (
-                <p className="text-[red]">Passwords Dont Match</p>
-              )}
-              {shortLength && (
-                <p className="text-[red]">Passwords length is short</p>
-              )}
-              <div>
-                <button
-                  type="submit"
-                  className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-                >
-                  Sign up
-                </button>
-              </div>
-            </form>
-          </div>
+      <div className="hidden md:flex w-1/2 items-center justify-center p-10">
+        <img
+          src="/6310507.jpg"
+          alt="Illustration"
+          className="w-full max-w-lg rounded-xl shadow-2xl"
+        />
+      </div>
+
+      <div className="flex flex-1 flex-col justify-center px-6 py-12 sm:px-16 lg:px-24 animate-fade-in">
+        <div className="sm:mx-auto sm:w-full sm:max-w-md text-center">
+          <img
+            className="mx-auto h-12 w-auto"
+            src="/QuickLib logo1.png"
+            alt="QuickLib"
+          />
+          <h2 className="mt-6 text-3xl font-extrabold text-blue-900">
+            Student Registration
+          </h2>
+          <p className="mt-2 text-sm text-gray-600">
+            Create your student account and start learning!
+          </p>
+        </div>
+
+        <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
+          <form className="bg-white p-8 rounded-lg shadow-lg space-y-6" onSubmit={onSubmitHandler}>
+            {formTags.map((el) => (
+              <Input
+                htmlFor={el}
+                labelClasses="block text-sm font-medium text-gray-700"
+                inputClasses="mt-1 block w-full rounded-md border border-gray-300 px-4 py-2 text-gray-900 shadow-sm focus:border-teal-500 focus:ring-teal-500 sm:text-sm"
+                type={
+                  el === "Email"
+                    ? "email"
+                    : el.includes("Password")
+                    ? "password"
+                    : "text"
+                }
+                ref={refs[el.split(" ").join("").toLowerCase()]}
+                key={el}
+              />
+            ))}
+
+            {matchPassword && (
+              <p className="text-sm text-red-600 font-medium">
+                Passwords don't match
+              </p>
+            )}
+            {shortLength && (
+              <p className="text-sm text-red-600 font-medium">
+                Password must be at least 8 characters
+              </p>
+            )}
+
+            <div>
+              <button
+                type="submit"
+                className="w-full bg-gradient-to-r from-teal-500 to-green-500 hover:from-teal-600 hover:to-green-600 text-white py-2 px-4 rounded-md shadow-md font-semibold transition transform hover:scale-105"
+              >
+                Sign Up
+              </button>
+            </div>
+          </form>
         </div>
       </div>
-    </>
+    </div>
   );
 }

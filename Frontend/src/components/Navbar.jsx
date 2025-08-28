@@ -20,6 +20,8 @@ export default function Navbar() {
   const { accessToken, role, loading, removeAccess } = useContext(AuthContext);
   const [navigation, setNavigation] = useState([]);
   const pathname = usePathname();
+  const router = useRouter();
+
   useEffect(() => {
     if (!accessToken) {
       setNavigation(guestNavigation);
@@ -28,9 +30,8 @@ export default function Navbar() {
     } else {
       setNavigation(userNavigation);
     }
-  }, [accessToken, role,loading]);
+  }, [accessToken, role, loading]);
 
-  const router = useRouter();
   const logoutHandler = async () => {
     await logout();
     setTimeout(() => {
@@ -38,15 +39,19 @@ export default function Navbar() {
       router.push("/Login");
     }, 2000);
   };
+
   return (
-    <Disclosure as="nav" className="bg-transparent">
+    <Disclosure
+      as="nav"
+      className="backdrop-blur-lg bg-white/70 border-b border-gray-200 shadow-sm sticky top-0 z-50 transition-all"
+    >
       {({ open }) => (
         <>
-          <div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
+          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <div className="relative flex h-16 items-center justify-between">
+
               <div className="absolute inset-y-0 left-0 flex items-center sm:hidden">
-                <Disclosure.Button className="relative inline-flex items-center justify-center rounded-md p-2 text-black hover:bg-gray-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white">
-                  <span className="absolute -inset-0.5" />
+                <Disclosure.Button className="inline-flex items-center justify-center rounded-md p-2 text-teal-700 hover:bg-teal-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-teal-500">
                   <span className="sr-only">Open main menu</span>
                   {open ? (
                     <XMarkIcon className="block h-6 w-6" aria-hidden="true" />
@@ -55,70 +60,71 @@ export default function Navbar() {
                   )}
                 </Disclosure.Button>
               </div>
+
               <div className="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
+
                 <div className="flex flex-shrink-0 items-center">
                   <img
-                    className="h-8 w-auto"
+                    className="h-9 w-auto"
                     src="/QuickLib logo1.png"
                     alt="Quicklib"
                   />
                 </div>
-                <div className="hidden sm:ml-6 sm:block">
-                  <div className="flex space-x-4">
-                    {navigation.map((item) => {
-                      const isActive = pathname === item.href;
-                      return (
-                        <Link
-                          key={item.name}
-                          href={item.href}
-                          className={classNames(
-                            isActive
-                              ? "bg-teal-700 text-white"
-                              : "text-black hover:bg-teal-500 hover:text-white",
-                            "rounded-md px-3 py-2 text-sm font-medium"
-                          )}
-                          aria-current={isActive ? "page" : undefined}
-                        >
-                          {item.name}
-                        </Link>
-                      );
-                    })}
-                  </div>
+
+
+                <div className="hidden sm:ml-6 sm:flex sm:space-x-4">
+                  {navigation.map((item) => {
+                    const isActive = pathname === item.href;
+                    return (
+                      <Link
+                        key={item.name}
+                        href={item.href}
+                        className={classNames(
+                          isActive
+                            ? "bg-teal-600 text-white"
+                            : "text-teal-800 hover:bg-teal-100 hover:text-teal-900",
+                          "rounded-md px-3 py-2 text-sm font-medium transition"
+                        )}
+                      >
+                        {item.name}
+                      </Link>
+                    );
+                  })}
                 </div>
               </div>
+
               <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
+
                 <button
                   type="button"
-                  className="relative rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
+                  className="rounded-full bg-white/70 p-1 text-teal-700 hover:text-teal-900 focus:outline-none focus:ring-2 focus:ring-teal-500"
                 >
-                  <span className="absolute -inset-1.5" />
                   <span className="sr-only">View notifications</span>
                   <BellIcon className="h-6 w-6" aria-hidden="true" />
                 </button>
 
                 {accessToken && (
-                  <Menu as="div" className="relative ml-3">
+                  <Menu as="div" className="relative ml-4">
                     <div>
-                      <Menu.Button className="relative flex rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
-                        <span className="absolute -inset-1.5" />
+                      <Menu.Button className="flex rounded-full bg-teal-100 p-1 focus:outline-none focus:ring-2 focus:ring-teal-500">
                         <span className="sr-only">Open user menu</span>
                         <img
-                          className="h-8 w-8 rounded-full"
+                          className="h-8 w-8 rounded-full object-cover"
                           src="/account.png"
-                          alt=""
+                          alt="User"
                         />
                       </Menu.Button>
                     </div>
                     <Transition
                       as={Fragment}
-                      enter="transition ease-out duration-100"
-                      enterFrom="transform opacity-0 scale-95"
-                      enterTo="transform opacity-100 scale-100"
-                      leave="transition ease-in duration-75"
-                      leaveFrom="transform opacity-100 scale-100"
-                      leaveTo="transform opacity-0 scale-95"
+                      enter="transition ease-out duration-150"
+                      enterFrom="opacity-0 scale-95"
+                      enterTo="opacity-100 scale-100"
+                      leave="transition ease-in duration-100"
+                      leaveFrom="opacity-100 scale-100"
+                      leaveTo="opacity-0 scale-95"
                     >
-                      <Menu.Items className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                      <Menu.Items className="absolute right-0 mt-2 w-48 origin-top-right rounded-lg bg-white shadow-xl ring-1 ring-black ring-opacity-5 focus:outline-none z-20">
                         <Menu.Item>
                           {({ active }) => (
                             <Link
@@ -135,7 +141,7 @@ export default function Navbar() {
                         <Menu.Item>
                           {({ active }) => (
                             <Link
-                              href="\Settings"
+                              href="/Settings"
                               className={classNames(
                                 active ? "bg-gray-100" : "",
                                 "block px-4 py-2 text-sm text-gray-700"
@@ -149,8 +155,8 @@ export default function Navbar() {
                           {({ active }) => (
                             <button
                               className={classNames(
-                                active ? "bg-gray-100 " : "",
-                                "block px-4 py-2 text-sm text-gray-700"
+                                active ? "bg-gray-100" : "",
+                                "block w-full text-left px-4 py-2 text-sm text-red-600"
                               )}
                               onClick={logoutHandler}
                             >
@@ -166,24 +172,24 @@ export default function Navbar() {
             </div>
           </div>
 
-          <Disclosure.Panel className="sm:hidden">
-            <div className="space-y-1 px-2 pb-3 pt-2">
-              {navigation.map((item) => (
+          <Disclosure.Panel className="sm:hidden px-2 pt-2 pb-4">
+            {navigation.map((item) => {
+              const isActive = pathname === item.href;
+              return (
                 <Link
                   key={item.name}
                   href={item.href}
                   className={classNames(
-                    item.current
-                      ? "bg-teal-700 text-white"
-                      : "text-black hover:bg-teal-500 hover:text-white",
+                    isActive
+                      ? "bg-teal-600 text-white"
+                      : "text-teal-900 hover:bg-teal-100 hover:text-teal-900",
                     "block rounded-md px-3 py-2 text-base font-medium"
                   )}
-                  aria-current={item.current ? "page" : undefined}
                 >
                   {item.name}
                 </Link>
-              ))}
-            </div>
+              );
+            })}
           </Disclosure.Panel>
         </>
       )}

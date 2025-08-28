@@ -1,9 +1,9 @@
-"use client"
+"use client";
 
 import Input from "./Input";
 import { useRef, useState } from "react";
 import Link from "next/link";
-import {REQUEST_URL} from "@/utils/constant";
+import { REQUEST_URL } from "@/utils/constant";
 import { useRouter } from "next/navigation";
 
 export default function LibrarianRegistration() {
@@ -21,23 +21,25 @@ export default function LibrarianRegistration() {
   const router = useRouter();
   const [matchPassword, setMatchPassword] = useState(false);
   const [shortLength, setShortLength] = useState(false);
+
   const nameRef = useRef();
   const emailRef = useRef();
   const collegeRef = useRef();
   const passwordRef = useRef();
   const confirmPasswordRef = useRef();
-  const libraryIDRef=useRef();
-  const libraryKeyRef=useRef();
-  const branchRef=useRef();
+  const libraryIDRef = useRef();
+  const libraryKeyRef = useRef();
+  const branchRef = useRef();
+
   const refs = {
     fullname: nameRef,
     email: emailRef,
     college: collegeRef,
     password: passwordRef,
     confirmpassword: confirmPasswordRef,
-    libraryid:libraryIDRef,
-    librarykey:libraryKeyRef,
-    branch:branchRef
+    libraryid: libraryIDRef,
+    librarykey: libraryKeyRef,
+    branch: branchRef
   };
 
   const onSubmitHandler = async (event) => {
@@ -48,9 +50,9 @@ export default function LibrarianRegistration() {
       password: passwordRef.current.value,
       college: collegeRef.current.value,
       role: "Admin",
-      enrollmentNumber:libraryIDRef.current.value,
-      adminKey:libraryKeyRef.current.value,
-      branch:branchRef.current.value
+      enrollmentNumber: libraryIDRef.current.value,
+      adminKey: libraryKeyRef.current.value,
+      branch: branchRef.current.value
     };
 
     if (data.password.length < 8) {
@@ -58,9 +60,10 @@ export default function LibrarianRegistration() {
       setShortLength(true);
       return;
     }
+
     if (confirmPasswordRef.current.value !== data.password) {
-      setMatchPassword(false);
       setMatchPassword(true);
+      setShortLength(false);
       return;
     }
 
@@ -68,8 +71,8 @@ export default function LibrarianRegistration() {
       method: "POST",
       body: JSON.stringify(data),
       headers: {
-        "Content-Type": "application/json",
-      },
+        "Content-Type": "application/json"
+      }
     });
 
     if (response.ok) {
@@ -80,67 +83,81 @@ export default function LibrarianRegistration() {
   };
 
   return (
-    <>
-      <div className="flex">
-        <div className="w-[50%] hidden md:block">
-          <img src="/6310507.jpg" alt="illustration" />
-        </div>
-        <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8 ">
-          <div className="sm:mx-auto sm:w-full sm:max-w-sm">
-            <img
-              className="mx-auto h-10 w-auto"
-              src="/QuickLib logo1.png"
-              alt="Your Company"
-            />
-            <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
-              Sign Up your account
-            </h2>
-          </div>
+    <div className="min-h-screen flex flex-col md:flex-row bg-gradient-to-br from-white via-blue-50 to-white">
 
-          <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-            <form className="space-y-6" onSubmit={onSubmitHandler}>
-              {formTags.map((el) => (
-                <Input
-                  htmlFor={el}
-                  labelClasses="block text-sm font-medium leading-6 text-gray-900"
-                  inputClasses="block w-full rounded-md border-0 px-4 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                  type={
-                    el === "Email"
-                      ? "email"
-                      : el.includes("Password")
-                      ? "password"
-                      : "text"
-                  }
-                  ref={refs[el.split(" ").join("").toLowerCase()]}
-                  key={el}
-                />
-              ))}
-              {matchPassword && (
-                <p className="text-[red]">Passwords Dont Match</p>
-              )}
-              {shortLength && (
-                <p className="text-[red]">Passwords length is short</p>
-              )}
-              <div>
-                <button
-                  type="submit"
-                  className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-                >
-                  Sign up
-                </button>
-              </div>
-            </form>
-            <p className="mt-5 text-center text-sm text-gray-500">
-              <Link
-                href="/StudentRegistration"
-                className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500"
+      <div className="hidden md:flex w-1/2 items-center justify-center p-10">
+        <img
+          src="/6310507.jpg"
+          alt="Illustration"
+          className="w-full max-w-lg rounded-xl shadow-2xl"
+        />
+      </div>
+
+      <div className="flex flex-1 flex-col justify-center px-6 py-12 sm:px-16 lg:px-24 animate-fade-in">
+        <div className="sm:mx-auto sm:w-full sm:max-w-md text-center">
+          <img
+            className="mx-auto h-12 w-auto"
+            src="/QuickLib logo1.png"
+            alt="QuickLib"
+          />
+          <h2 className="mt-6 text-3xl font-extrabold text-blue-900">
+            Librarian Registration
+          </h2>
+          <p className="mt-2 text-sm text-gray-600">
+            Sign up to manage your institution's digital library.
+          </p>
+        </div>
+
+        <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
+          <form className="bg-white p-8 rounded-lg shadow-lg space-y-6" onSubmit={onSubmitHandler}>
+            {formTags.map((el) => (
+              <Input
+                htmlFor={el}
+                labelClasses="block text-sm font-medium text-gray-700"
+                inputClasses="mt-1 block w-full rounded-md border border-gray-300 px-4 py-2 text-gray-900 shadow-sm focus:border-teal-500 focus:ring-teal-500 sm:text-sm"
+                type={
+                  el === "Email"
+                    ? "email"
+                    : el.includes("Password")
+                    ? "password"
+                    : "text"
+                }
+                ref={refs[el.split(" ").join("").toLowerCase()]}
+                key={el}
+              />
+            ))}
+
+            {matchPassword && (
+              <p className="text-sm text-red-600 font-medium">
+                Passwords don't match
+              </p>
+            )}
+            {shortLength && (
+              <p className="text-sm text-red-600 font-medium">
+                Password must be at least 8 characters
+              </p>
+            )}
+
+            <div>
+              <button
+                type="submit"
+                className="w-full bg-gradient-to-r from-teal-500 to-green-500 hover:from-teal-600 hover:to-green-600 text-white py-2 px-4 rounded-md shadow-md font-semibold transition transform hover:scale-105"
               >
-                Are you a student ?
-              </Link>
-            </p>
-          </div>
+                Sign Up
+              </button>
+            </div>
+          </form>
+
+          <p className="mt-6 text-center text-sm text-gray-500">
+            <Link
+              href="/StudentRegistration"
+              className="font-semibold text-teal-600 hover:text-teal-500 transition"
+            >
+              Are you a student?
+            </Link>
+          </p>
         </div>
       </div>
-    </>
+    </div>
   );
 }

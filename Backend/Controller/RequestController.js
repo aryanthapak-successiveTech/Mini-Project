@@ -102,7 +102,7 @@ export const requestBook = catchAsync(async (req, res, next) => {
 export const approveRequest = catchAsync(async (req, res, next) => {
   const requestId = req.body.id;
   const status = req.body.status;
-
+  console.log(requestId, status);
   const updatedRequest = await Request.findByIdAndUpdate(
     requestId,
     { status },

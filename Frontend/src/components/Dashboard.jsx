@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import React, { useState, useEffect, useContext } from "react";
 import Card from "./Card";
 import { AuthContext } from "@/context/AuthContext";
@@ -11,23 +11,23 @@ const Dashboard = () => {
   const [booksIssuedPerMonth, setBooksIssuedPerMonth] = useState([]);
   const [month, setMonth] = useState([]);
 
-  const {accessToken}=useContext(AuthContext);
-  useEffect(() => {
+  const { accessToken } = useContext(AuthContext);
 
+  useEffect(() => {
     const fetchData = async () => {
-        if(!accessToken) return;
+      if (!accessToken) return;
       try {
         const response = await fetch(
-          `${REQUEST_URL}/issuedBooks/statistics?year=2025`,{
-            method:"GET",
-            headers:{
-                "Content-Type":"application/json",
-                "Authorization":`Bearer ${accessToken}`
-            }
+          `${REQUEST_URL}/issuedBooks/statistics?year=2025`,
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${accessToken}`,
+            },
           }
         );
         const data = await response.json();
-        console.log(data);
         setTotalFine(data.totalFine);
         setTotalBooks(data.totalBooksIssued);
         setBooksIssuedPerMonth(data.booksIssuedPerMonth.map((el) => el.count));
@@ -46,20 +46,27 @@ const Dashboard = () => {
       value: `${totalFine} Rs`,
     },
     {
-      title: "Total Books",
+      title: "Total Books Issued",
       value: totalBooks,
     },
   ];
 
   return (
-    <div>
-      <div className="flex gap-4 items-center justify-center">
+    <div className="max-w-5xl mx-auto p-6">
+      <h1 className="text-3xl font-bold text-teal-700 mb-8 text-center">
+        Dashboard Overview
+      </h1>
+
+      <div className="flex flex-wrap justify-center gap-6 mb-12">
         {cardData.map((el, index) => (
           <Card key={index} title={el.title} value={el.value} />
         ))}
       </div>
-      {booksIssuedPerMonth.length > 0 && month.length > 0 && (
+
+      {booksIssuedPerMonth.length > 0 && month.length > 0 ? (
         <HorizontalBars seriesData={booksIssuedPerMonth} xAxisLabels={month} />
+      ) : (
+        <p className="text-center text-gray-500">No data available for the selected year.</p>
       )}
     </div>
   );
