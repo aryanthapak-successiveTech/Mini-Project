@@ -4,7 +4,7 @@ import Link from "next/link";
 import Input from "./Input";
 import { useContext, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
-import { login } from "@/utils/auth";
+import { login } from "@/utils/Auth";
 import { AuthContext } from "@/context/AuthContext";
 
 export default function Login() {
@@ -34,7 +34,6 @@ export default function Login() {
 
   return (
     <div className="min-h-screen flex flex-col md:flex-row bg-gradient-to-br from-white via-blue-50 to-white">
-
       <div className="hidden md:flex w-1/2 items-center justify-center p-10">
         <img
           src="/Mobile login-amico.png"
@@ -100,7 +99,6 @@ export default function Login() {
                 />
               </div>
             </div>
-
 
             {wrongPassword && (
               <p className="text-sm text-red-600 font-medium">

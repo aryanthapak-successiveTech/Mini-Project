@@ -3,7 +3,7 @@
 import Input from "./Input";
 import { useRef, useState } from "react";
 import Link from "next/link";
-import { REQUEST_URL } from "@/utils/constant";
+import { REQUEST_URL } from "@/utils/Constant";
 import { useRouter } from "next/navigation";
 
 export default function LibrarianRegistration() {
@@ -15,7 +15,7 @@ export default function LibrarianRegistration() {
     "College",
     "Library ID",
     "Library Key",
-    "Branch"
+    "Branch",
   ];
 
   const router = useRouter();
@@ -39,7 +39,7 @@ export default function LibrarianRegistration() {
     confirmpassword: confirmPasswordRef,
     libraryid: libraryIDRef,
     librarykey: libraryKeyRef,
-    branch: branchRef
+    branch: branchRef,
   };
 
   const onSubmitHandler = async (event) => {
@@ -52,7 +52,7 @@ export default function LibrarianRegistration() {
       role: "Admin",
       enrollmentNumber: libraryIDRef.current.value,
       adminKey: libraryKeyRef.current.value,
-      branch: branchRef.current.value
+      branch: branchRef.current.value,
     };
 
     if (data.password.length < 8) {
@@ -71,8 +71,8 @@ export default function LibrarianRegistration() {
       method: "POST",
       body: JSON.stringify(data),
       headers: {
-        "Content-Type": "application/json"
-      }
+        "Content-Type": "application/json",
+      },
     });
 
     if (response.ok) {
@@ -84,7 +84,6 @@ export default function LibrarianRegistration() {
 
   return (
     <div className="min-h-screen flex flex-col md:flex-row bg-gradient-to-br from-white via-blue-50 to-white">
-
       <div className="hidden md:flex w-1/2 items-center justify-center p-10">
         <img
           src="/6310507.jpg"
@@ -109,7 +108,10 @@ export default function LibrarianRegistration() {
         </div>
 
         <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
-          <form className="bg-white p-8 rounded-lg shadow-lg space-y-6" onSubmit={onSubmitHandler}>
+          <form
+            className="bg-white p-8 rounded-lg shadow-lg space-y-6"
+            onSubmit={onSubmitHandler}
+          >
             {formTags.map((el) => (
               <Input
                 htmlFor={el}

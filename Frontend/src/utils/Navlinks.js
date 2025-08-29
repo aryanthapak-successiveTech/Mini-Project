@@ -12,6 +12,10 @@ export const userNavigation = [
     name: "Requests",
     href: "/Requests",
   },
+  {
+    name:"Chatbox",
+    href:"/Chatbox"
+  }
 ];
 
 const adminOptions = [

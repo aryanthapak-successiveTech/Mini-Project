@@ -8,6 +8,7 @@
     "dev": "nodemon index.js",
     "start": "nodemon index.js"
   },
+  "type": "module",
   "author": "",
   "license": "ISC",
   "dependencies": {

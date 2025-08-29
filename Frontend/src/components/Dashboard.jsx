@@ -2,7 +2,7 @@
 import React, { useState, useEffect, useContext } from "react";
 import Card from "./Card";
 import { AuthContext } from "@/context/AuthContext";
-import { REQUEST_URL } from "@/utils/constant";
+import { REQUEST_URL } from "@/utils/Constant";
 import HorizontalBars from "./Barchart";
 
 const Dashboard = () => {
@@ -66,7 +66,9 @@ const Dashboard = () => {
       {booksIssuedPerMonth.length > 0 && month.length > 0 ? (
         <HorizontalBars seriesData={booksIssuedPerMonth} xAxisLabels={month} />
       ) : (
-        <p className="text-center text-gray-500">No data available for the selected year.</p>
+        <p className="text-center text-gray-500">
+          No data available for the selected year.
+        </p>
       )}
     </div>
   );

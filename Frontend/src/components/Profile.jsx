@@ -1,26 +1,19 @@
 "use client";
-import {REQUEST_URL} from "@/utils/constant";
+import { REQUEST_URL } from "@/utils/Constant";
 import { useContext, useEffect, useState } from "react";
 import MiniProfile from "./MiniProfile";
 import { AuthContext } from "@/context/AuthContext";
 
 export default function Profile() {
   const [profileData, setProfileData] = useState({});
-  const {accessToken}=useContext(AuthContext);
-  const headers = [
-    "Full Name",
-    "Role",
-    "Branch",
-    "Email",
-    "Enrollment No",
-  ];
-
+  const { accessToken } = useContext(AuthContext);
+  const headers = ["Full Name", "Role", "Branch", "Email", "Enrollment No"];
 
   const fetchData = async () => {
     const response = await fetch(`${REQUEST_URL}/user/profile`, {
       method: "GET",
       headers: {
-        authorization: `Bearer ${accessToken}`
+        authorization: `Bearer ${accessToken}`,
       },
     });
 
@@ -31,7 +24,7 @@ export default function Profile() {
   useEffect(() => {
     if (!accessToken) return;
     fetchData();
-  },[accessToken]);
+  }, [accessToken]);
 
   return (
     <div className="mx-[10%] my-[5%] overflow-hidden">
@@ -44,7 +37,11 @@ export default function Profile() {
         </p>
       </div>
       <div className="w-[50%] md:w-[10%] mx-auto">
-        <img src="/account.png" className="mx-auto max-w-full h-auto" alt="Profile" />
+        <img
+          src="/account.png"
+          className="mx-auto max-w-full h-auto"
+          alt="Profile"
+        />
       </div>
       <div>
         <input type="file" />

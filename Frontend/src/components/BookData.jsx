@@ -2,7 +2,7 @@
 import { useParams, useRouter } from "next/navigation";
 import { useContext, useEffect, useState } from "react";
 
-import { REQUEST_URL } from "@/utils/constant";
+import { REQUEST_URL } from "@/utils/Constant";
 import { AuthContext } from "@/context/AuthContext";
 
 const BookData = () => {
@@ -86,9 +86,7 @@ const BookData = () => {
 
   if (error) {
     return (
-      <div className="text-center text-red-600 font-semibold py-8">
-        {error}
-      </div>
+      <div className="text-center text-red-600 font-semibold py-8">{error}</div>
     );
   }
 
@@ -107,9 +105,15 @@ const BookData = () => {
       </div>
       <div className="flex flex-col items-start w-full md:w-2/3 space-y-4">
         <h1 className="text-2xl font-bold">{bookDetails.name || "Untitled"}</h1>
-        <h2 className="text-lg text-gray-700">By {bookDetails.author || "Unknown"}</h2>
-        <p className="text-gray-700">{bookDetails.description || "No description available."}</p>
-        <p className="text-gray-700 font-semibold">Qty: {bookDetails.qty ?? "N/A"}</p>
+        <h2 className="text-lg text-gray-700">
+          By {bookDetails.author || "Unknown"}
+        </h2>
+        <p className="text-gray-700">
+          {bookDetails.description || "No description available."}
+        </p>
+        <p className="text-gray-700 font-semibold">
+          Qty: {bookDetails.qty ?? "N/A"}
+        </p>
 
         <div className="flex space-x-4">
           <button

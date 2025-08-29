@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from "react";
-import {REQUEST_URL} from "@/utils/constant";
+import { REQUEST_URL } from "@/utils/Constant";
 import { AuthContext } from "@/context/AuthContext";
 
 const BookReturn = (props) => {
@@ -12,7 +12,7 @@ const BookReturn = (props) => {
   const [fine, setFine] = useState(0);
   const [wrong, setWrong] = useState(false);
   const [returned, setReturned] = useState(false);
-  const {accessToken}=useContext(AuthContext);
+  const { accessToken } = useContext(AuthContext);
 
   const fineCalculator = () => {
     const now = new Date();
@@ -28,7 +28,7 @@ const BookReturn = (props) => {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          "Authorization": `Bearer ${accessToken}`
+          Authorization: `Bearer ${accessToken}`,
         },
       }
     );
@@ -39,17 +39,14 @@ const BookReturn = (props) => {
   };
   const returnHandler = async () => {
     setWrong(false);
-    const response = await fetch(
-      `${REQUEST_URL}/issuedBooks/return?id=${id}`,
-      {
-        method: "POST",
-        body: JSON.stringify({ fine: fine }),
-        headers: {
-          "Content-Type": "application/json",
-            "Authorization": `Bearer ${accessToken}`
-        },
-      }
-    );
+    const response = await fetch(`${REQUEST_URL}/issuedBooks/return?id=${id}`, {
+      method: "POST",
+      body: JSON.stringify({ fine: fine }),
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${accessToken}`,
+      },
+    });
 
     if (!response.ok) {
       setWrong(true);
@@ -59,7 +56,7 @@ const BookReturn = (props) => {
   };
 
   useEffect(() => {
-    if(!accessToken) return;
+    if (!accessToken) return;
     fineCalculator();
   }, [accessToken]);
 

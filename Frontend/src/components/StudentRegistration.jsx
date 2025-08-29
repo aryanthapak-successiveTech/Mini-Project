@@ -3,7 +3,7 @@
 import Input from "./Input";
 import { useRef, useState } from "react";
 import { useRouter } from "next/navigation";
-import { REQUEST_URL } from "@/utils/constant";
+import { REQUEST_URL } from "@/utils/Constant";
 
 export default function StudentRegistration() {
   const formTags = [
@@ -83,7 +83,6 @@ export default function StudentRegistration() {
 
   return (
     <div className="min-h-screen flex flex-col md:flex-row bg-gradient-to-br from-white via-blue-50 to-white">
-
       <div className="hidden md:flex w-1/2 items-center justify-center p-10">
         <img
           src="/6310507.jpg"
@@ -108,7 +107,10 @@ export default function StudentRegistration() {
         </div>
 
         <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
-          <form className="bg-white p-8 rounded-lg shadow-lg space-y-6" onSubmit={onSubmitHandler}>
+          <form
+            className="bg-white p-8 rounded-lg shadow-lg space-y-6"
+            onSubmit={onSubmitHandler}
+          >
             {formTags.map((el) => (
               <Input
                 htmlFor={el}

@@ -1,7 +1,7 @@
 "use client";
 import React, { useState, useEffect, useContext } from "react";
 import Request from "./Request";
-import { REQUEST_URL } from "@/utils/constant";
+import { REQUEST_URL } from "@/utils/Constant";
 import { AuthContext } from "@/context/AuthContext";
 
 const Requests = () => {
@@ -19,15 +19,12 @@ const Requests = () => {
 
   const fetchData = async () => {
     try {
-      const response = await fetch(
-        `${REQUEST_URL}/issueBook/checkRequests`,
-        {
-          method: "GET",
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-          },
-        }
-      );
+      const response = await fetch(`${REQUEST_URL}/issueBook/checkRequests`, {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      });
       const data = await response.json();
       setRequests(data.requests);
     } catch (error) {

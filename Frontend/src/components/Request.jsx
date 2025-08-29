@@ -1,28 +1,24 @@
 import React, { useContext, useState } from "react";
 
 import Button from "./Button";
-import { REQUEST_URL } from "@/utils/constant";
+import { REQUEST_URL } from "@/utils/Constant";
 import { AuthContext } from "@/context/AuthContext";
 
 const Request = (props) => {
-  const { id, role,book, email, status } = props;
+  const { id, role, book, email, status } = props;
   const [requestStatus, setRequestStatus] = useState(status);
-  const {accessToken}=useContext(AuthContext);
+  const { accessToken } = useContext(AuthContext);
   const requestHandler = async (action) => {
     const status = action;
-    const response = await fetch(
-      `${REQUEST_URL}/issueBook/Approve`,
-      {
-        method: "POST",
-        body: JSON.stringify({ id,email, status, book }),
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${accessToken}`,
-        },
-      }
-    );
+    const response = await fetch(`${REQUEST_URL}/issueBook/Approve`, {
+      method: "POST",
+      body: JSON.stringify({ id, email, status, book }),
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${accessToken}`,
+      },
+    });
     if (response.ok) {
-
       setRequestStatus(status);
       return;
     }

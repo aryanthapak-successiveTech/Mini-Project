@@ -19,5 +19,5 @@ const emailTemplate=(details)=>{
     return template;
 }
 
-module.exports=emailTemplate;
+export default emailTemplate
 

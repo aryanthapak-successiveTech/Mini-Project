@@ -1,7 +1,7 @@
 "use client";
 import { useContext, useEffect, useRef, useState } from "react";
 import Book from "./Book";
-import { REQUEST_URL } from "@/utils/constant";
+import { REQUEST_URL } from "@/utils/Constant";
 import { AuthContext } from "@/context/AuthContext";
 
 const SearchPage = () => {
@@ -37,7 +37,6 @@ const SearchPage = () => {
 
   return (
     <div className="px-4 py-8">
-
       <div className="flex justify-center mb-10">
         <form
           className="w-full max-w-xl bg-white/70 backdrop-blur-md shadow-md rounded-xl px-6 py-4 border border-gray-200"
@@ -54,7 +53,7 @@ const SearchPage = () => {
           </div>
         </form>
       </div>
-      
+
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
         {books.length > 0 ? (
           books.map((book) => (

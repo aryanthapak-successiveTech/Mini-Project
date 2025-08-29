@@ -5,12 +5,12 @@ import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import { useRouter, usePathname } from "next/navigation";
 import Link from "next/link";
 import { AuthContext } from "@/context/AuthContext";
-import { logout } from "@/utils/auth";
+import { logout } from "@/utils/Auth";
 import {
   adminNavigation,
   guestNavigation,
   userNavigation,
-} from "@/utils/navlinks";
+} from "@/utils/Navlinks";
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
@@ -49,7 +49,6 @@ export default function Navbar() {
         <>
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <div className="relative flex h-16 items-center justify-between">
-
               <div className="absolute inset-y-0 left-0 flex items-center sm:hidden">
                 <Disclosure.Button className="inline-flex items-center justify-center rounded-md p-2 text-teal-700 hover:bg-teal-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-teal-500">
                   <span className="sr-only">Open main menu</span>
@@ -62,7 +61,6 @@ export default function Navbar() {
               </div>
 
               <div className="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
-
                 <div className="flex flex-shrink-0 items-center">
                   <img
                     className="h-9 w-auto"
@@ -70,7 +68,6 @@ export default function Navbar() {
                     alt="Quicklib"
                   />
                 </div>
-
 
                 <div className="hidden sm:ml-6 sm:flex sm:space-x-4">
                   {navigation.map((item) => {
@@ -94,7 +91,6 @@ export default function Navbar() {
               </div>
 
               <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
-
                 <button
                   type="button"
                   className="rounded-full bg-white/70 p-1 text-teal-700 hover:text-teal-900 focus:outline-none focus:ring-2 focus:ring-teal-500"

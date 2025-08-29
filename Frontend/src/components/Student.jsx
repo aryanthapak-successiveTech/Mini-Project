@@ -1,7 +1,7 @@
 "use client";
 import { useContext, useRef, useState } from "react";
 import BookReturn from "./BookReturn";
-import { REQUEST_URL } from "@/utils/constant";
+import { REQUEST_URL } from "@/utils/Constant";
 import { AuthContext } from "@/context/AuthContext";
 
 const Student = () => {

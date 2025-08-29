@@ -1,6 +1,6 @@
 "use client";
 
-import { refreshAccessToken } from "@/utils/auth";
+import { refreshAccessToken } from "@/utils/Auth";
 import { useEffect, useState } from "react";
 
 export default function useAuth() {

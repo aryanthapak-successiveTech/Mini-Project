@@ -8,5 +8,5 @@ type Mutation{
 }
 
 type Subscription{
-    messageSent:Message!
+    messageSent(conversationId:String!):Message!
 }
