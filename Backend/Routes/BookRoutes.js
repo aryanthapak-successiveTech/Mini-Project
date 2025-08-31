@@ -7,12 +7,13 @@ import {
   deleteBook,
 } from "../Controller/BookController.js";
 import { authChecker, roleBasedAccess } from "../Middlwares/AuthMiddleware.js";
+import { upload } from "../Middlwares/UploadMiddlware.js";
 
 const router = express.Router();
 router
   .route("/")
   .get(authChecker, getBooks)
-  .post(authChecker, roleBasedAccess(["Admin"]), createBook);
+  .post(authChecker, roleBasedAccess(["Admin"]),upload.single("ebook"),createBook);
 router
   .route("/:id")
   .get(authChecker, getBook)

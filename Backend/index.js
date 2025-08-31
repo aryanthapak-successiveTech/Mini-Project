@@ -19,11 +19,14 @@ import bookRouter from "./Routes/BookRoutes.js";
 import issueRouter from "./Routes/IssueRoutes.js";
 import issuedBookRouter from "./Routes/IssuedBookRoutes.js";
 import { AppError } from "./Middlwares/AppError.js";
+import reviewRouter from "./Routes/ReviewRoutes.js"
 
 import { typeDefs } from "./Schema/typeDefs.js";
 import { resolvers } from "./Schema/resolvers.js";
 import { pubsub } from "./Server/pubsub.js";
 import { authChecker } from "./Middlwares/AuthMiddleware.js";
+import { logger } from "./Middlwares/UrlMiddleware.js";
+import { pathBasedValidation } from "./Middlwares/ValidationMiddleware.js";
 
 dotenv.config();
 
@@ -37,13 +40,14 @@ app.use(
     credentials: true,
   })
 );
-
+app.use(logger);
+app.use(pathBasedValidation);
+app.use("/api/v1/uploads", express.static("uploads"));
 app.use("/api/v1/user", userRouter);
 app.use("/api/v1/books", bookRouter);
 app.use("/api/v1/issueBook", issueRouter);
 app.use("/api/v1/issuedBooks", issuedBookRouter);
-
-
+app.use("/api/v1/reviews",reviewRouter)
 app.use(AppError);
 
 mongoose
@@ -52,7 +56,6 @@ mongoose
   )
   .then(() => console.log("✅ MongoDB connected"))
   .catch((err) => console.log("❌ DB Error:", err));
-
 
 const httpServer = http.createServer(app);
 
@@ -84,12 +87,10 @@ app.use(
   "/graphql",
   express.json(),
   authChecker,
-  expressMiddleware(apolloServer,{
-    context: async ({req}) =>({ user:req.user,pubsub })
+  expressMiddleware(apolloServer, {
+    context: async ({ req }) => ({ user: req.user, pubsub }),
   })
 );
-
-
 
 const PORT = process.env.PORT || 8080;
 httpServer.listen(PORT, () => {

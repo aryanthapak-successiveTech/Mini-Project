@@ -17,6 +17,7 @@ export const authChecker = (req, res, next) => {
       userId: decoded.userId,
       email: decoded.email,
       role: decoded.role,
+      enrollmentNo:decoded.enrollmentNo
     };
 
 

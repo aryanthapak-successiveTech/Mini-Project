@@ -3,20 +3,26 @@ import mongoose from "mongoose";
 const bookSchema = new mongoose.Schema({
   name: {
     type: String,
-    required: [true, "A book must have a Name"],
+    required: [true, "A book must have an Name"],
   },
   author: {
     type: String,
-    required: [true, "A book must have a Author"],
+    required: [true, "A book must have an Author"],
   },
   ISBN: {
     type: Number,
+    required: [true, "A book must have an ISBN"],
   },
   description:{
-    type:String
+    type:String,
+    required: [true, "A book must have an Description"],
   },
   qty:{
-    type:Number
+    type:Number,
+    required:[true,"A book must have a qunatity"]
+  },
+  eBookAddress:{
+    type:String,
   }
 });
 

@@ -39,7 +39,7 @@ export const checkRequests = catchAsync(async (req, res, next) => {
 
 export const requestBook = catchAsync(async (req, res, next) => {
 
-    const { bookId } = req.body;
+    const { bookId,bookName } = req.body;
     const email = req.user.email;
     const userId = req.user.userId;
 
@@ -70,6 +70,7 @@ export const requestBook = catchAsync(async (req, res, next) => {
         {
           email,
           book: bookId,
+          bookName:bookName,
           status: "Pending",
           user: userId,
         },

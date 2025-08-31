@@ -18,6 +18,7 @@ const signAccessToken = (payload) => {
 
 export const createUser = catchAsync(async (req, res, next) => {
   const user = await User.create(req.body);
+  user.password="";
   res.status(200).json({
     stats: "Success",
     data: {
@@ -43,11 +44,15 @@ export const loginHandler = catchAsync(async (req, res, next) => {
     userId: user._id,
     email,
     role: user.role,
+    enrollmentNo:user.enrollmentNumber
   });
+
+
   const accessToken = signAccessToken({
     userId: user._id,
     email,
     role: user.role,
+    enrollmentNo:user.enrollmentNumber
   });
 
   res.cookie("jwt", refreshToken, {
@@ -76,6 +81,7 @@ export const refreshHandler = catchAsync(async (req, res, next) => {
       userId: payload.userId,
       email: payload.email,
       role: payload.role,
+      enrollmentNo:payload.enrollmentNo
     });
     res.status(200).json({ accessToken, role: payload.role });
   });

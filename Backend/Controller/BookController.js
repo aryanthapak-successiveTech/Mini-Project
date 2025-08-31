@@ -1,5 +1,6 @@
 import Book from "../Models/BookModel.js";
 import catchAsync from "../utils/catchAsync.js";
+
 import { ApiError } from "../Middlwares/AppError.js";
 
 export const getBooks = catchAsync(async (req, res, next) => {
@@ -32,6 +33,7 @@ export const getBooks = catchAsync(async (req, res, next) => {
 export const getBook = catchAsync(async (req, res, next) => {
   const id = req.params.id;
   const book = await Book.findById(id);
+
   if (!book) {
     throw new ApiError(404, "Book not found");
   }
@@ -41,6 +43,10 @@ export const getBook = catchAsync(async (req, res, next) => {
 });
 
 export const createBook = catchAsync(async (req, res, next) => {
+  const {file}=req;
+  if(file){
+    req.body.eBookAddress=`/uploads/ebooks/${file.filename}`
+  }
   const book = await Book.create(req.body);
   res.status(200).json({
     status: "Success",
@@ -78,3 +84,4 @@ export const deleteBook = catchAsync(async (req, res, next) => {
 
   next();
 });
+

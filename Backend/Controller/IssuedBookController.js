@@ -1,5 +1,4 @@
 import User from "../Models/UserModel.js";
-import mongoose from "mongoose";
 import Book from "../Models/BookModel.js";
 import Request from "../Models/IssueModel.js";
 import catchAsync from "../utils/catchAsync.js";
@@ -11,6 +10,9 @@ export const checkIssuedBooks = catchAsync(async (req, res, next) => {
   const student = await User.findOne({
     enrollmentNumber: enrollmentNo,
   }).populate("bookRequests");
+
+  console.log(enrollmentNo)
+
   if (!student) {
     throw new ApiError(404, "User not found");
   }

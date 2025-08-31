@@ -28,15 +28,27 @@ export const profileDetails = catchAsync(async (req, res, next) => {
     enrollmentno: user.enrollmentNumber,
   };
 
-  res.status(200).json(data);
+  res.status(200).json({
+    status:"Success",
+    data
+  });
 });
 
 export const deleteUser = catchAsync(async (req, res, next) => {
   const deletedUser = await User.findOneAndDelete(req.body);
   res.status(202).json({
     status: "Success",
-    data: {
-      deletedUser,
-    },
   });
 });
+
+export const getUserBookRequestHistory=catchAsync(async(req,res,next)=>{
+  const user=await User.findOne({
+    _id:req.user.userId
+  }).populate("bookRequests");
+
+  const oldBooksHistory=user.bookRequests.filter((bookReq)=>bookReq.status==="Returned"||bookReq.status==="Collected");
+  return res.status(200).json({
+    status:"Success",
+    data:oldBooksHistory
+  })
+})

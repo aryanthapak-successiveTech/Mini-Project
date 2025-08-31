@@ -13,6 +13,10 @@ const requestSchema = new mongoose.Schema({
     required: true,
   },
 
+  bookName:{
+    type:String
+  },
+
   status: {
     type: String,
     enum: [
