@@ -15,6 +15,10 @@ export const userNavigation = [
   {
     name:"Chatbox",
     href:"/Chatbox"
+  },
+  {
+    name:"My Requests",
+    href:"/MyRequests"
   }
 ];
 
@@ -27,6 +31,10 @@ const adminOptions = [
     name: "Student",
     href: "/Student",
   },
+  {
+    name:"Add Book",
+    href:"/Addbook"
+  }
 ];
 
 export const adminNavigation = [...userNavigation, ...adminOptions];

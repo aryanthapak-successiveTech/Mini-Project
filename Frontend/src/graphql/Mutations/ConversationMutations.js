@@ -10,4 +10,4 @@ export const CREATE_CONVERSATION = gql`
   }
 `;
 
-export { CREATE_CONVERSATION };
+

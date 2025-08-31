@@ -48,7 +48,7 @@ const Request = (props) => {
   const isAdmin = role === "Admin";
 
   return (
-    <div className="max-w-md my-4 p-4 bg-white shadow-lg rounded-lg">
+    <div className="max-w-md my-4 p-4 bg-white shadow-lg rounded-lg mx-auto">
       <div className="text-center">
         <h1 className="text-xl font-bold mb-2 sm:text-lg">Title: {book}</h1>
         <h2 className="text-lg text-gray-700 mb-4">Requested by: {email}</h2>

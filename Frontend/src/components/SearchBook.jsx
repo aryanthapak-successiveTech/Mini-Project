@@ -3,15 +3,18 @@ import { useContext, useEffect, useRef, useState } from "react";
 import Book from "./Book";
 import { REQUEST_URL } from "@/utils/Constant";
 import { AuthContext } from "@/context/AuthContext";
+import Pagination from "./Pagination";
 
 const SearchPage = () => {
   const searchRef = useRef();
   const [books, setBooks] = useState([]);
   const { accessToken } = useContext(AuthContext);
+  const [totalPages,setTotalPages]=useState(1);
   const timeRef = useRef(null);
+  const [page,setPage]=useState(1);
 
   const fetchData = async (searchTerm = "") => {
-    const response = await fetch(`${REQUEST_URL}/books?search=${searchTerm}`, {
+    const response = await fetch(`${REQUEST_URL}/books?search=${searchTerm}&page=${page}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -20,6 +23,7 @@ const SearchPage = () => {
     });
     const data = await response.json();
     setBooks(data.data);
+    setTotalPages(data.totalPages)
   };
 
   const searchHandler = (event) => {
@@ -33,10 +37,10 @@ const SearchPage = () => {
   useEffect(() => {
     if (!accessToken) return;
     fetchData();
-  }, [accessToken]);
+  }, [accessToken,page]);
 
   return (
-    <div className="px-4 py-8">
+    <div className="flex flex-col items-center px-4 py-8">
       <div className="flex justify-center mb-10">
         <form
           className="w-full max-w-xl bg-white/70 backdrop-blur-md shadow-md rounded-xl px-6 py-4 border border-gray-200"
@@ -70,6 +74,7 @@ const SearchPage = () => {
           </div>
         )}
       </div>
+      <Pagination total={totalPages} onPageChange={(value)=>setPage(value)}/>
     </div>
   );
 };

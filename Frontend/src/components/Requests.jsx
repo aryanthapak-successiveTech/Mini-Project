@@ -41,7 +41,7 @@ const Requests = () => {
       </h1>
 
       {noPendingRequests ? (
-        <div className="flex flex-col items-center justify-center text-center bg-white rounded-xl shadow-md p-8">
+        <div className="flex flex-col items-center grow justify-center text-center bg-white rounded-xl shadow-md p-8">
           <img
             src="/no-requests.jpeg"
             alt="No requests"
