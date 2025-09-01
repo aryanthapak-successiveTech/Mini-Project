@@ -1,9 +1,9 @@
 "use client";
 import { useContext, useEffect, useRef, useState } from "react";
 import Book from "./Book";
-import { REQUEST_URL } from "@/utils/Constant";
 import { AuthContext } from "@/context/AuthContext";
 import Pagination from "./Pagination";
+import { fetchBookDetails } from "@/utils/apiCalls";
 
 const SearchPage = () => {
   const searchRef = useRef();
@@ -14,17 +14,9 @@ const SearchPage = () => {
   const [page,setPage]=useState(1);
 
   const fetchData = async (searchTerm = "") => {
-    const response = await fetch(`${REQUEST_URL}/books?search=${searchTerm}&page=${page}`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${accessToken}`,
-      },
-    });
-    const data = await response.json();
-    setBooks(data.data);
-    console.log(data);
-    setTotalPages(data.totalPages)
+    const bookDetails = await fetchBookDetails(page,searchTerm,accessToken)
+    setBooks(bookDetails.data);
+    setTotalPages(bookDetails.totalPages)
   };
 
   const searchHandler = (event) => {

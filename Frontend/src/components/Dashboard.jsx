@@ -2,8 +2,8 @@
 import React, { useState, useEffect, useContext } from "react";
 import Card from "./Card";
 import { AuthContext } from "@/context/AuthContext";
-import { REQUEST_URL } from "@/utils/Constant";
 import HorizontalBars from "./Barchart";
+import { getStatistics } from "@/utils/apiCalls";
 
 const Dashboard = () => {
   const [totalFine, setTotalFine] = useState(0);
@@ -17,16 +17,7 @@ const Dashboard = () => {
     const fetchData = async () => {
       if (!accessToken) return;
       try {
-        const response = await fetch(
-          `${REQUEST_URL}/issuedBooks/statistics?year=2025`,
-          {
-            method: "GET",
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${accessToken}`,
-            },
-          }
-        );
+        const response = await getStatistics(accessToken)
         const data = await response.json();
         setTotalFine(data.totalFine);
         setTotalBooks(data.totalBooksIssued);

@@ -5,6 +5,7 @@ import { useRef, useState } from "react";
 import Link from "next/link";
 import { REQUEST_URL } from "@/utils/Constant";
 import { useRouter } from "next/navigation";
+import { userSignup } from "@/utils/apiCalls";
 
 export default function LibrarianRegistration() {
   const formTags = [
@@ -67,13 +68,7 @@ export default function LibrarianRegistration() {
       return;
     }
 
-    const response = await fetch(`${REQUEST_URL}/user/Signup`, {
-      method: "POST",
-      body: JSON.stringify(data),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
+    const response = await userSignup(data);
 
     if (response.ok) {
       setTimeout(() => {

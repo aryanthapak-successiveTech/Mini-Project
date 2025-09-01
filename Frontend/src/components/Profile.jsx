@@ -1,8 +1,8 @@
 "use client";
-import { REQUEST_URL } from "@/utils/Constant";
 import { useContext, useEffect, useState } from "react";
 import MiniProfile from "./MiniProfile";
 import { AuthContext } from "@/context/AuthContext";
+import { getUserProfileDetails } from "@/utils/apiCalls";
 
 export default function Profile() {
   const [profileData, setProfileData] = useState({});
@@ -18,14 +18,7 @@ export default function Profile() {
 
   const fetchData = async () => {
     try {
-      const response = await fetch(`${REQUEST_URL}/user/profile`, {
-        method: "GET",
-        headers: {
-          authorization: `Bearer ${accessToken}`,
-        },
-      });
-
-      const userData = await response.json();
+      const userData=await getUserProfileDetails(accessToken);
       setProfileData(userData.data);
     } catch (err) {
       console.error("Failed to fetch profile:", err);

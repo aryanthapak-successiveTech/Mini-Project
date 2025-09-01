@@ -1,8 +1,9 @@
 "use client";
 import { useContext, useRef, useState } from "react";
 import BookReturn from "./BookReturn";
-import { REQUEST_URL } from "@/utils/Constant";
 import { AuthContext } from "@/context/AuthContext";
+import { getStudentBookHistory } from "@/utils/apiCalls";
+
 
 const Student = () => {
   const searchRef = useRef();
@@ -21,14 +22,7 @@ const Student = () => {
 
     setLoading(true);
     try {
-      const response = await fetch(`${REQUEST_URL}/issuedBooks`, {
-        method: "POST",
-        body: JSON.stringify({ enrollmentNo }),
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-          "Content-Type": "application/json",
-        },
-      });
+      const response = await getStudentBookHistory(enrollmentNo,accessToken)
 
       if (!response.ok) {
         setWrong(true);

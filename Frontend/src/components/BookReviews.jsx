@@ -2,33 +2,33 @@ import { AuthContext } from "@/context/AuthContext";
 import { REQUEST_URL } from "@/utils/Constant";
 import { useContext, useEffect, useState } from "react";
 import BookReview from "./BookReview";
+import PaginationComponent from "./Pagination";
+import { getBookReviews } from "@/utils/apiCalls";
 
 const BookReviews=({bookId})=>{
     const [reviews,setReviews]=useState([]);
     const {accessToken}=useContext(AuthContext);
+    const [totalPages,setTotalPages]=useState(1);
+    const [currentPage,setCurrentPage]=useState(1);
     const fetchData=async()=>{
-        const res=await fetch(`${REQUEST_URL}/reviews/${bookId}`,{
-            method:"GET",
-            headers:{
-                "Authorization":`Bearer ${accessToken}`
-            }
-        });
+        const res=await getBookReviews(accessToken,bookId,currentPage);
 
-        const data=await res.json();
+        const reviewData=await res.json();
 
-        setReviews(data.data);
+        setReviews(reviewData.data);
+        setTotalPages(reviewData.totalPages);
 
-        console.log(data);
     }
 
     useEffect(()=>{
         if(!accessToken) return;
         fetchData();
-    },[accessToken])
+    },[accessToken,currentPage])
 
     return(
-        <section>
+        <section className="flex flex-col items-center w-full">
             <BookReview data={reviews}/>
+            <PaginationComponent total={totalPages} onPageChange={setCurrentPage} />
         </section>
     )
 }

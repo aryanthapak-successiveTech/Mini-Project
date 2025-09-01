@@ -1,8 +1,7 @@
 import React, { useContext, useState } from "react";
-
 import Button from "./Button";
-import { REQUEST_URL } from "@/utils/Constant";
 import { AuthContext } from "@/context/AuthContext";
+import { postBookRequest } from "@/utils/apiCalls";
 
 const Request = (props) => {
   const { id, role, book, email, status } = props;
@@ -10,14 +9,8 @@ const Request = (props) => {
   const { accessToken } = useContext(AuthContext);
   const requestHandler = async (action) => {
     const status = action;
-    const response = await fetch(`${REQUEST_URL}/issueBook/Approve`, {
-      method: "POST",
-      body: JSON.stringify({ id, email, status, book }),
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${accessToken}`,
-      },
-    });
+    const requestData={ id, email, status, book }
+    const response = await postBookRequest(accessToken,requestData)
     if (response.ok) {
       setRequestStatus(status);
       return;

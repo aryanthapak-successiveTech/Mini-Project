@@ -1,6 +1,7 @@
 import { useContext, useEffect, useState } from "react";
 import { REQUEST_URL } from "@/utils/Constant";
 import { AuthContext } from "@/context/AuthContext";
+import { reIssueBook, returnBook } from "@/utils/apiCalls";
 
 const BookReturn = (props) => {
   const { book, returnTime, issueTime, id } = props;
@@ -22,16 +23,7 @@ const BookReturn = (props) => {
   };
 
   const reIssueBookHandler = async () => {
-    const response = await fetch(
-      `${REQUEST_URL}/issuedBooks/re-issue-book?id=${id}`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${accessToken}`,
-        },
-      }
-    );
+    const response = await reIssueBook(id,accessToken);
 
     const data = await response.json();
     const newFormmatedIssueDate = new Date(data.issueTime).toLocaleString();
@@ -39,14 +31,7 @@ const BookReturn = (props) => {
   };
   const returnHandler = async () => {
     setWrong(false);
-    const response = await fetch(`${REQUEST_URL}/issuedBooks/return?id=${id}`, {
-      method: "POST",
-      body: JSON.stringify({ fine: fine }),
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${accessToken}`,
-      },
-    });
+    const response = await returnBook(id,accessToken,fine);
 
     if (!response.ok) {
       setWrong(true);

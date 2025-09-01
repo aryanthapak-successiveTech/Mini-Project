@@ -3,41 +3,27 @@ import { AuthContext } from "@/context/AuthContext";
 import { REQUEST_URL } from "@/utils/Constant";
 import { useContext, useEffect, useState } from "react";
 import IssueBook from "./IssueBook";
+import { addBookReview, getUserRequests } from "@/utils/apiCalls";
 
 const IssuedBooks = () => {
   const [issuedBookDetails, setIssuedBookDetails] = useState([]);
   const { accessToken } = useContext(AuthContext);
  
   const fetchData = async () => {
-    const res = await fetch(`${REQUEST_URL}/user/requests`, {
-      methood: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${accessToken}`,
-      },
-    });
+    const res = await getUserRequests(accessToken);
 
     const data = await res.json();
     setIssuedBookDetails(data.data);
-    console.log(data);
+
   };
 
   const addReview = async (data) => {
 
-    const res = await fetch(`${REQUEST_URL}/reviews`, {
-      method: "POST",
-      body: JSON.stringify(data),
-      headers: {
-        "Content-Type": "application/json",
-        "Authorization": `Bearer ${accessToken}`,
-      },
-    });
+    const res = await addBookReview(accessToken,data);
 
     if(res.ok){
       fetchData();
     }
-
-    
   };
 
   useEffect(() => {

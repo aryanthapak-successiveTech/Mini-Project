@@ -5,7 +5,6 @@ import Stack from '@mui/material/Stack';
 
 export default function PaginationComponent({current,total,onPageChange}) {
     const handleChange=(event,value)=>{
-        console.log(value);
         onPageChange(value);
     }
   return (

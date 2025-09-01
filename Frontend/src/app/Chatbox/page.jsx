@@ -1,4 +1,4 @@
-const { default: ChatBox } = require("@/components/ChatBox")
+import ChatBox from "@/components/ChatBox";
 
 const ChatBoxPage = () => {
     return <ChatBox/>

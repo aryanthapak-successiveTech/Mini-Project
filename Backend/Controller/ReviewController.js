@@ -25,13 +25,26 @@ export const createReview = catchAsync(async (req, res, next) => {
 
 export const getReviewsForBook = catchAsync(async (req, res, next) => {
   const { bookId } = req.params;
-  const reviews = await Review
-    .find({ postedFor: bookId })
-    .populate("postedBy", "name email");
+  const page = parseInt(req.query.page) || 1;
+  const limit = parseInt(req.query.limit) || 5;
+  const skip = (page - 1) * limit;
+
+  const [reviews, total] = await Promise.all([
+    Review.find({ postedFor: bookId }).sort({rating:-1})
+      .skip(skip)
+      .limit(limit)
+      .populate("postedBy", "name email"),
+
+    Review.countDocuments({ postedFor: bookId })
+  ]);
+
   res.status(200).json({
-    status: "Success",
+    status: "success",
     results: reviews.length,
-    data: reviews,
+    total,
+    currentPage: page,
+    totalPages: Math.ceil(total / limit),
+    data: reviews
   });
 });
 

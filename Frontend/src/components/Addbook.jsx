@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { REQUEST_URL } from "@/utils/Constant";
 import { AuthContext } from "@/context/AuthContext";
 import { BookContext } from "@/context/BookContext";
+import { addOrEditBookDetails } from "@/utils/apiCalls";
 export default function AddBook() {
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -84,19 +85,13 @@ export default function AddBook() {
     }
 
     try {
-      const res = await fetch(requestUrl, {
-        method: requestMethod,
-        body: formData,
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-      });
-
-      const result = await res.json();
+      const res = await addOrEditBookDetails(requestUrl,requestMethod,formData,accessToken);
 
       if (!res.ok) {
         throw new Error(result.message || "Failed to add book");
       }
+
+      const result = await res.json();
 
       if(isEditing){
         setIsEditing(false);

@@ -45,8 +45,8 @@ export const roleBasedAccess = (allowedRoles) => {
 export const verifyAdminRegistration = (req, res, next) => {
   try {
     const { role } = req.body;
-    if (role != "Admin") {
-      next();
+    if (!role || role != "Admin") {
+      return next();
     }
 
     const {adminKey}=req.body;
