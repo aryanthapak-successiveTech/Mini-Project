@@ -7,7 +7,7 @@ import IssueBook from "./IssueBook";
 const IssuedBooks = () => {
   const [issuedBookDetails, setIssuedBookDetails] = useState([]);
   const { accessToken } = useContext(AuthContext);
-  const [isReviewAdded,setIsReviewAdded]=useState(false);
+ 
   const fetchData = async () => {
     const res = await fetch(`${REQUEST_URL}/user/requests`, {
       methood: "GET",
@@ -19,6 +19,7 @@ const IssuedBooks = () => {
 
     const data = await res.json();
     setIssuedBookDetails(data.data);
+    console.log(data);
   };
 
   const addReview = async (data) => {
@@ -31,6 +32,10 @@ const IssuedBooks = () => {
         "Authorization": `Bearer ${accessToken}`,
       },
     });
+
+    if(res.ok){
+      fetchData();
+    }
 
     
   };
@@ -51,6 +56,8 @@ const IssuedBooks = () => {
           status={issuedBook.status}
           bookId={issuedBook.book}
           addReview={addReview}
+          review={issuedBook.review?.review}
+          rating={issuedBook.review?.rating}
         />
       ))}
     </div>

@@ -1,5 +1,7 @@
 import catchAsync from "../utils/catchAsync.js";
 import User from "../Models/UserModel.js";
+import Request from "../Models/IssueModel.js"
+import mongoose from "mongoose";
 
 export const getUsers = catchAsync(async (req, res, next) => {
   const users = await User.find();
@@ -42,11 +44,31 @@ export const deleteUser = catchAsync(async (req, res, next) => {
 });
 
 export const getUserBookRequestHistory=catchAsync(async(req,res,next)=>{
-  const user=await User.findOne({
-    _id:req.user.userId
-  }).populate("bookRequests");
+  const userId=new mongoose.Types.ObjectId(req.user.userId);
+  const userBookRequests=await Request.aggregate([
+    {
+      $match:{
+        user:userId
+      }
+    },
+    {
+        $lookup:{
+        from:"reviews",
+        localField:"book",
+        foreignField:"postedFor",
+        as:"review"
+      }
+    },{
+      $unwind:{
+        path: "$review",
+        preserveNullAndEmptyArrays: true
+      }
+    }
+  ])
 
-  const oldBooksHistory=user.bookRequests.filter((bookReq)=>bookReq.status==="Returned"||bookReq.status==="Collected");
+  console.log(userBookRequests);
+
+  const oldBooksHistory=userBookRequests.filter((bookReq)=>bookReq.status==="Returned"||bookReq.status==="Collected");
   return res.status(200).json({
     status:"Success",
     data:oldBooksHistory

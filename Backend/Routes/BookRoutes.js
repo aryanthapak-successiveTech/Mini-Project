@@ -14,6 +14,7 @@ router
   .route("/")
   .get(authChecker, getBooks)
   .post(authChecker, roleBasedAccess(["Admin"]),upload.single("ebook"),createBook);
+
 router
   .route("/:id")
   .get(authChecker, getBook)

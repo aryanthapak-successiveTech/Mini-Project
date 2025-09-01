@@ -3,7 +3,9 @@ const RatingStars = ({ filled, onClick }) => {
   return (
     <svg
       onClick={onClick}
-      className={`w-6 h-6 cursor-pointer ${filled ? "text-yellow-400" : "text-gray-300"}`}
+      className={`w-6 h-6 cursor-pointer ${
+        filled ? "text-yellow-400" : "text-gray-300"
+      }`}
       fill="currentColor"
       viewBox="0 0 20 20"
     >
@@ -13,4 +15,3 @@ const RatingStars = ({ filled, onClick }) => {
 };
 
 export default RatingStars;
-

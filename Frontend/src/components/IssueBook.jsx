@@ -1,7 +1,16 @@
 import { useState, useRef } from "react";
 import RatingStars from "./RatingStars";
 
-const IssueBook = ({ name, status, issueDate, fine, bookId, addReview }) => {
+const IssueBook = ({
+  name,
+  status,
+  issueDate,
+  fine,
+  bookId,
+  addReview,
+  review,
+  rating,
+}) => {
   const [isAddingReview, setIsAddingReview] = useState(false);
   const reviewRef = useRef();
   const [selectedRating, setSelectedRating] = useState(0);
@@ -40,7 +49,22 @@ const IssueBook = ({ name, status, issueDate, fine, bookId, addReview }) => {
         <span className="font-medium">Fine:</span> ₹{fine}
       </p>
 
-      {!isAddingReview ? (
+      {review && rating ? (
+        <div className="bg-gray-50 p-4 rounded border border-gray-200 mb-4">
+          <h3 className="font-medium text-gray-800 mb-1">Your Review:</h3>
+          <p className="text-gray-700 mb-1">{review}</p>
+          <div className="flex items-center">
+            <span className="text-sm text-gray-600 mr-2">Rating:</span>
+            {[1, 2, 3, 4, 5].map((star) => (
+              <RatingStars
+                key={star}
+                filled={star <= rating}
+                onClick={() => {}}
+              />
+            ))}
+          </div>
+        </div>
+      ) : !isAddingReview ? (
         <button
           className="bg-teal-500 hover:bg-teal-600 text-white font-semibold py-2 px-4 rounded"
           onClick={() => setIsAddingReview(true)}
@@ -94,4 +118,4 @@ const IssueBook = ({ name, status, issueDate, fine, bookId, addReview }) => {
   );
 };
 
-export default IssueBook;
+export default IssueBook

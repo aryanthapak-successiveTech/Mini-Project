@@ -23,6 +23,7 @@ const SearchPage = () => {
     });
     const data = await response.json();
     setBooks(data.data);
+    console.log(data);
     setTotalPages(data.totalPages)
   };
 

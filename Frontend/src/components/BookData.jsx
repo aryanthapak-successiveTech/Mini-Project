@@ -5,6 +5,7 @@ import { useContext, useEffect, useState } from "react";
 import { REQUEST_URL } from "@/utils/Constant";
 import { AuthContext } from "@/context/AuthContext";
 import EbookViewer from "./EbookViewer";
+import BookReviews from "./BookReviews";
 
 const BookData = () => {
   const [bookDetails, setDetails] = useState(null);
@@ -103,7 +104,7 @@ const BookData = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-white via-blue-50 to-white py-10 px-4 sm:px-8 md:px-16 animate-fade-in">
   <div className="flex flex-col md:flex-row gap-10 items-start max-w-6xl mx-auto">
-    {/* Book image */}
+
     <div className="w-full md:w-1/3">
       <img
         src="/download.png"
@@ -112,7 +113,6 @@ const BookData = () => {
       />
     </div>
 
-    {/* Book details */}
     <div className="flex-1 space-y-4">
       <h1 className="text-3xl font-bold text-blue-900">
         {bookDetails.name || "Untitled"}
@@ -127,7 +127,6 @@ const BookData = () => {
         Qty: {bookDetails.qty ?? "N/A"}
       </p>
 
-      {/* Buttons */}
       <div className="flex flex-wrap gap-4 mt-4">
         <button
           className="bg-teal-500 hover:bg-teal-700 text-white font-bold py-2 px-4 rounded disabled:opacity-50 disabled:cursor-not-allowed"
@@ -160,12 +159,13 @@ const BookData = () => {
     </div>
   </div>
 
-  {/* E-book viewer */}
   {showEBook && (
     <div className="mt-12 max-w-6xl mx-auto w-full">
       <EbookViewer ebookUrl={`${REQUEST_URL}${bookDetails.eBookAddress}`} />
     </div>
   )}
+
+  <BookReviews bookId={id}/>
 </div>
   );
 };

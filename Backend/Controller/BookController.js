@@ -9,8 +9,12 @@ export const getBooks = catchAsync(async (req, res, next) => {
   const searchTerm = req.query.search || "";
   const skip = (page - 1) * limit;
 
-  const totalBooks = await Book.countDocuments();
-  const books = await Book.find({
+  const findtotalBooks = Book.countDocuments({$or: [
+      { name: { $regex: searchTerm, $options: "i" } },
+      { author: { $regex: searchTerm, $options: "i" } },
+      { description: { $regex: searchTerm, $options: "i" } },
+    ]});
+  const findBooks = Book.find({
     $or: [
       { name: { $regex: searchTerm, $options: "i" } },
       { author: { $regex: searchTerm, $options: "i" } },
@@ -19,6 +23,8 @@ export const getBooks = catchAsync(async (req, res, next) => {
   })
     .skip(skip)
     .limit(limit);
+
+  const [books,totalBooks]=await Promise.all([findBooks,findtotalBooks])
 
   res.status(200).json({
     status: "success",
