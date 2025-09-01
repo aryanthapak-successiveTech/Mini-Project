@@ -6,6 +6,8 @@ import { REQUEST_URL } from "@/utils/Constant";
 import { AuthContext } from "@/context/AuthContext";
 import EbookViewer from "./EbookViewer";
 import BookReviews from "./BookReviews";
+import { BookContext } from "@/context/BookContext";
+
 
 const BookData = () => {
   const [bookDetails, setDetails] = useState(null);
@@ -16,8 +18,8 @@ const BookData = () => {
   const [showEBook,setShowEBook]=useState(false);
   const { id } = useParams();
   const router = useRouter();
-  const { accessToken } = useContext(AuthContext);
-
+  const { accessToken,role } = useContext(AuthContext);
+  const {setBookId,setAuthor,setDescription,setISBN,setIsEditing,setName,setQty}=useContext(BookContext);
   const fetchData = async () => {
     try {
       setError(null);
@@ -74,6 +76,33 @@ const BookData = () => {
     setShowEBook(prev=>!prev);
   }
 
+  const editBookHandler=()=>{
+    setBookId(id)
+    setName(bookDetails.name);
+    setDescription(bookDetails.description);
+    setISBN(bookDetails.ISBN);
+    setQty(bookDetails.qty);
+    setAuthor(bookDetails.author)
+    setIsEditing(true);
+    router.push("/Addbook")
+
+  }
+
+  const deleteBookHandler=async()=>{
+    const res=await fetch(`${REQUEST_URL}/books/${id}`,{
+      method:"DELETE",
+      headers:{
+        "Authorization":`Bearer ${accessToken}`
+      }
+    })
+    console.log(res);
+
+    if(!res.ok){
+      return;
+    }
+
+    router.back();
+  }
   const backToSearchHandler = () => {
     router.back();
   };
@@ -149,6 +178,16 @@ const BookData = () => {
         >
           Back to Search
         </button>
+
+        {role==="Admin" && <button className="bg-blue-300 hover:bg-blue-400 text-gray-800 font-bold py-2 px-4 rounded" onClick={editBookHandler}>
+          Edit Book
+          </button>}
+
+        {
+          role==="Admin" && <button className="bg-red-500 hover:bg-red-700 text-gray-800 font-bold py-2 px-4 rounded" onClick={deleteBookHandler}>
+            Delete Book
+          </button>
+        }
       </div>
 
       {isPresent && (

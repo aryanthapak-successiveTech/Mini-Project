@@ -71,6 +71,7 @@ export const updateBook = catchAsync(async (req, res, next) => {
     runValidators: true,
   });
 
+
   res.status(201).json({
     status: "Success",
     data: updatedBook,
@@ -79,13 +80,11 @@ export const updateBook = catchAsync(async (req, res, next) => {
 });
 
 export const deleteBook = catchAsync(async (req, res, next) => {
-  const data = req.body;
-  const deletedBook = await Book.findOneAndDelete(data);
+  const {id}=req.params;
+
+  await Book.findOneAndDelete({_id:id});
   res.status(202).json({
     status: "Success",
-    data: {
-      deletedBook,
-    },
   });
 
   next();

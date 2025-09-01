@@ -1,6 +1,7 @@
 import Review from "../Models/ReviewBookModel.js";
 import catchAsync from "../utils/catchAsync.js";
 import { ApiError } from "../Middlwares/AppError.js";
+import Request from "../Models/IssueModel.js";
 
 export const createReview = catchAsync(async (req, res, next) => {
   const {postedFor, review, rating } = req.body;
@@ -10,6 +11,12 @@ export const createReview = catchAsync(async (req, res, next) => {
     review,
     rating,
   });
+
+  await Request.findOneAndUpdate({
+    user:req.user.userId
+  },{review:newReview._id},{
+    runValidators:true
+  })
   res.status(201).json({
     status: "Success",
     data: newReview,

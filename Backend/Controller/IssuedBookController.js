@@ -11,8 +11,6 @@ export const checkIssuedBooks = catchAsync(async (req, res, next) => {
     enrollmentNumber: enrollmentNo,
   }).populate("bookRequests");
 
-  console.log(enrollmentNo)
-
   if (!student) {
     throw new ApiError(404, "User not found");
   }
@@ -132,7 +130,6 @@ export const statistics = catchAsync(async (req, res, next) => {
 
 export const reIssueBook = catchAsync(async (req, res, next) => {
   const id = req.query.id;
-  console.log(id);
 
   const updatedBook = await Request.findOneAndUpdate(
     { _id: id },

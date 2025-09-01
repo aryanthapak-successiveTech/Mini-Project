@@ -18,7 +18,7 @@ router
 router
   .route("/:id")
   .get(authChecker, getBook)
-  .patch(authChecker, roleBasedAccess(["Admin"]), updateBook)
-  .delete(authChecker, roleBasedAccess(["Admin"], deleteBook));
+  .patch(authChecker, roleBasedAccess(["Admin"]),upload.single("ebook"), updateBook)
+  .delete(authChecker, roleBasedAccess(["Admin"]), deleteBook);
 
 export default router;

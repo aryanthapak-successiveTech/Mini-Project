@@ -1,9 +1,10 @@
 "use client";
 
-import { useState, useRef, useContext } from "react";
+import { useState, useRef, useContext, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { REQUEST_URL } from "@/utils/Constant";
 import { AuthContext } from "@/context/AuthContext";
+import { BookContext } from "@/context/BookContext";
 export default function AddBook() {
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -12,7 +13,10 @@ export default function AddBook() {
   const [isDescriptionValid, setIsDescriptionValid] = useState(true);
   const [isISBNValid, setIsISBNValid] = useState(true);
   const [isQtyValid, setIsQtyValid] = useState(true);
+  const [requestUrl,setRequestUrl]=useState(`${REQUEST_URL}/books`);
+  const [requestMethod,setRequestMethod]=useState("POST");
   const { accessToken } = useContext(AuthContext);
+  const {bookId,author,name,qty,description,isbn,isEditing,setIsEditing}=useContext(BookContext);
   const router = useRouter();
 
   const nameRef = useRef();
@@ -21,6 +25,18 @@ export default function AddBook() {
   const descriptionRef = useRef();
   const qtyRef = useRef();
   const fileRef = useRef();
+
+  useEffect(()=>{
+    if(!isEditing)return;
+    setRequestUrl(`${REQUEST_URL}/books/${bookId}`);
+    setRequestMethod("PATCH");
+    nameRef.current.value=name;
+    authorRef.current.value=author;
+    isbnRef.current.value=isbn;
+    qtyRef.current.value=qty;
+    descriptionRef.current.value=description;
+
+  },[isEditing])
 
   const onSubmitHandler = async (e) => {
     e.preventDefault();
@@ -68,8 +84,8 @@ export default function AddBook() {
     }
 
     try {
-      const res = await fetch(`${REQUEST_URL}/books`, {
-        method: "POST",
+      const res = await fetch(requestUrl, {
+        method: requestMethod,
         body: formData,
         headers: {
           Authorization: `Bearer ${accessToken}`,
@@ -80,6 +96,10 @@ export default function AddBook() {
 
       if (!res.ok) {
         throw new Error(result.message || "Failed to add book");
+      }
+
+      if(isEditing){
+        setIsEditing(false);
       }
 
       router.push("/Search-book");

@@ -41,6 +41,11 @@ const requestSchema = new mongoose.Schema({
     type: Number,
     default: 0,
   },
+
+  review:{
+    type:mongoose.Schema.Types.ObjectId,
+    ref:"Review"
+  }
 });
 
 requestSchema.pre("save", function (next) {

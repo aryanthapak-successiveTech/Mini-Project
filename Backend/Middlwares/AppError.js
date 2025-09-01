@@ -9,7 +9,7 @@ export const AppError=(err,req,res,next)=>{
     const statusCode=err.status||500;
     const message=err.message||"Something went wrong";
 
-    console.log(err.stack);
+    console.error(err.stack);
 
     return res.status(statusCode).json({
         status:"Failed",

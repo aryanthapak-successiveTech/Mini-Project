@@ -44,29 +44,11 @@ export const deleteUser = catchAsync(async (req, res, next) => {
 });
 
 export const getUserBookRequestHistory=catchAsync(async(req,res,next)=>{
-  const userId=new mongoose.Types.ObjectId(req.user.userId);
-  const userBookRequests=await Request.aggregate([
-    {
-      $match:{
-        user:userId
-      }
-    },
-    {
-        $lookup:{
-        from:"reviews",
-        localField:"book",
-        foreignField:"postedFor",
-        as:"review"
-      }
-    },{
-      $unwind:{
-        path: "$review",
-        preserveNullAndEmptyArrays: true
-      }
-    }
-  ])
 
-  console.log(userBookRequests);
+  const userBookRequests=await Request.find({
+    user:req.user.userId
+  }).populate("review");
+
 
   const oldBooksHistory=userBookRequests.filter((bookReq)=>bookReq.status==="Returned"||bookReq.status==="Collected");
   return res.status(200).json({
